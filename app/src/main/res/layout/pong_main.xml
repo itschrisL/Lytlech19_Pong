@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:screenOrientation="landscape"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="edu.up.cs371.lytlech19.lytlech19_pong.PongMainActivity">
+
+    <edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface
+        android:id="@+id/animationSurface"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface>
+
+</LinearLayout>
+    
