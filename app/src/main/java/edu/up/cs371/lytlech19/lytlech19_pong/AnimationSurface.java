@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.TextView;
 
 /**
  * A SurfaceView which allows which an animation to be drawn on it by a
@@ -32,6 +33,8 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 	private Paint backgroundPaint = new Paint(); // painter for painting background
 	private int flashCount; // counts down ticks for background-flash
 	private Paint flashPaint; // has color for background flash
+    private TextView textView1; // Reference to the first text view
+    private TextView textView2; // Reference to the second text view
 
 	private float ballRadius;
 	private Paint ballColor = new Paint();
@@ -130,6 +133,16 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 		}
 	}
 
+    /**
+     * Set Text Views so that they can be past to PongAnimator
+     * @param tv1
+     * @param tv2
+     */
+	public void setTextViews(TextView tv1, TextView tv2){
+        this.textView1 = tv1;
+        this.textView2 = tv2;
+    }
+
 	/**
 	 * Causes the background color to flash (change color) for the specified amount of time.
 	 * @param color
@@ -150,7 +163,7 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 	 */
 	private class AnimationThread extends Thread {
 
-		// a reference to a SurfaveView's holder. This is used to "lock" the
+		// a reference to a SurfaceView's holder. This is used to "lock" the
 		// canvas when we want to write to it
 		private SurfaceHolder surfaceHolder;
 
@@ -190,25 +203,6 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 			flashCount = millis; // set the flash count
 			flashPaint = new Paint(); // create painter ...
 			flashPaint.setColor(color); // ... with the appropriate color
-		}
-
-		/**
-		 * Draws the ball for game
-		 * @param xCenter
-		 * @param yCenter
-		 */
-		public void drawBall(Canvas canvas, float xCenter, float yCenter){
-			canvas.drawCircle(xCenter, yCenter, ballRadius, ballColor);
-		}
-
-		/**
-		 * Draw Paddle
-		 * @param canvas
-		 * @param xCenter
-		 * @param yCenter
-		 */
-		public void drawPaddle(Canvas canvas, float xCenter, float yCenter){
-
 		}
 
 		/**
@@ -268,7 +262,16 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 
 						// tell the animator to draw the next frame
 						synchronized (surfaceHolder) {
-							animator.tick(canvas);
+                            animator.tick(canvas);
+                            String tempString1, tempString2;
+                            if (animator instanceof PongAnimator){
+                                ((PongAnimator) animator).setTextViews(textView1, textView2);
+                                tempString1 = ((PongAnimator) animator).getDispString1();
+                                tempString2 = ((PongAnimator) animator).getDispString2();
+
+                                //textView1.setText(tempString1);
+                                //textView2.setText(tempString2);
+                            }
 						}// synchronized
 					}
 				}// try

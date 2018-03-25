@@ -25,14 +25,10 @@ public class Ball {
     public boolean xBackwards = false; // Whether the ball is moving backwards in x direction
     public boolean yBackwards = false; // Whether the ball is moving backwards in y direction
 
-    public Ball(){
-        ballInit();
-    }
-
     /**
-     *
+     * Ball Constructor, Sets all instance variables to default values
      */
-    public void ballInit(){
+    public Ball(){
         ballColor = new Paint();
         ballColor.setColor(Color.WHITE);
         ballRadius = 30;
@@ -61,21 +57,21 @@ public class Ball {
     public void spawnNewBallRandom(int surfaceX, int surfaceY){
 
         //Instance Variables
-        Random rando = new Random();
+        Random random = new Random();
 
         // Set random numbers for x and y count
-        xCount = rando.nextInt(surfaceX);
-        yCount = rando.nextInt(surfaceY);
+        xCount = random.nextInt(surfaceX);
+        yCount = random.nextInt(surfaceY);
 
         // Set direction of ball random
-        int randInt = rando.nextInt()*2;
+        int randInt = random.nextInt()*2;
         if(randInt == 1){
             xBackwards = false;
         }
         else {
             xBackwards = false;
         }
-        randInt = rando.nextInt()*2;
+        randInt = random.nextInt()*2;
         if(randInt == 1){
             yBackwards = false;
         }
@@ -83,9 +79,27 @@ public class Ball {
             yBackwards = false;
         }
 
-        double maxVelocity = 25;
-        xVelocity = rando.nextDouble()*maxVelocity;
-        yVelocity = rando.nextDouble()*maxVelocity;
+        double maxVelocity = 50;
+        xVelocity = random.nextDouble()*maxVelocity;
+        yVelocity = random.nextDouble()*maxVelocity;
 
     }
+
+    /**
+     * Converts this ball's x coordinates to a string.
+     * @return
+     */
+    public String cordinatesTOString(){
+        return "X : " + this.xCount + ", Y : " + this.yCount + ";";
+    }
+
+    /**
+     * Converts ball's x and y velocities to a string
+     * @return
+     */
+    public String velocitiesTOString(){
+        return "X Velocity : " + this.xVelocity + ", Y Velocity : " + this.yVelocity + ";";
+    }
+
+
 }

@@ -4,13 +4,55 @@
     android:screenOrientation="landscape"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context="edu.up.cs371.lytlech19.lytlech19_pong.PongMainActivity">
+    tools:context="edu.up.cs371.lytlech19.lytlech19_pong.PongMainActivity"
+    android:weightSum="1">
 
     <edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface
         android:id="@+id/animationSurface"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-    </edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface>
+        android:layout_height="550dp"
+        android:layout_weight="1.25"></edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.88">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.97"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/TextView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/TextView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/AddBrickButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ADD BRICK" />
+
+        <Button
+            android:id="@+id/newBallButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Ball" />
+
+    </LinearLayout>
 
 </LinearLayout>
     
