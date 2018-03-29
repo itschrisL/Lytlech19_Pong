@@ -136,11 +136,9 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
     /**
      * Set Text Views so that they can be past to PongAnimator
      * @param tv1
-     * @param tv2
      */
-	public void setTextViews(TextView tv1, TextView tv2){
+	public void setTextViews(TextView tv1){
         this.textView1 = tv1;
-        this.textView2 = tv2;
     }
 
 	/**
@@ -268,9 +266,6 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
                                 ((PongAnimator) animator).setTextViews(textView1, textView2);
                                 tempString1 = ((PongAnimator) animator).getDispString1();
                                 tempString2 = ((PongAnimator) animator).getDispString2();
-
-                                //textView1.setText(tempString1);
-                                //textView2.setText(tempString2);
                             }
 						}// synchronized
 					}

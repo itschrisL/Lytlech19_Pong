@@ -16,26 +16,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0.88"
+        android:background="@android:color/darker_gray"
         android:orientation="horizontal"
-        android:weightSum="1"
-        android:layout_weight="0.88">
+        android:weightSum="1">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="453dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.97"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/TextView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
-
-            <TextView
-                android:id="@+id/TextView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="456dp"
+                android:layout_height="40dp"
                 android:text="TextView" />
 
         </LinearLayout>
@@ -44,13 +38,18 @@
             android:id="@+id/AddBrickButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADD BRICK" />
+            android:background="@color/colorPrimaryDark"
+            android:elevation="0dp"
+            android:text="ADD BRICK"
+            android:layout_weight="0.24" />
 
         <Button
             android:id="@+id/newBallButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Ball" />
+            android:background="@color/colorPrimaryDark"
+            android:text="Add Ball"
+            android:layout_weight="0.20" />
 
     </LinearLayout>
 

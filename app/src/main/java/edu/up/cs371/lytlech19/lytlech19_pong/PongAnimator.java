@@ -10,6 +10,13 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
+ * PongAnimator to handle the pong animation.  Calculates and updates locations of objects being
+ * drawn on the playing field.
+ *
+ * Is passed through AnimationSurface which handles the needed thread
+ *
+ * Implements Animator interface
+ *
  * Created on 3/19/2018.
  * @author Chris Lytle
  */
@@ -33,9 +40,11 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
     private ArrayList<Brick> bricksToRemove = new ArrayList<>(); // ArrayList of bricks to remove
     private TextView textView1 = null;
     private TextView textView2 = null;
-    private String dispString1;
+    private String dispString1; // String to be passed to text view display
     private String dispString2;
-    private Ball targetBall;
+    private Ball targetBall; // Saved object for target ball, The ball the AI is trying to hit.  Used for testing purposes
+    private Paint defaultBallColor = new Paint(); // Default ball color to reset ball color
+    private Paint defaultTargetBallColor = new Paint(); // Default target ball color
 
     /**
      * Interval between animation frames: .03 seconds (i.e., about 33 times
@@ -64,43 +73,27 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      */
     public void tick(Canvas g) {
 
+        // Set default colors
+        defaultBallColor.setColor(Color.WHITE);
+        defaultTargetBallColor.setColor(Color.YELLOW);
+
+        // Get width of surface width and height
         surfaceWidth = g.getWidth();
         surfaceHeight = g.getHeight();
 
         // Draws Paddle
         drawPaddle(g);
 
+        // Draw Opponent paddle
         xOpponentPaddle = surfaceWidth - 100;
         drawOpponentPaddle(g);
         // Draw Walls
         drawWalls(g);
 
-        for(Ball B : ballsInPlay){
-            // Updates counts of yCount and xCount
-            if(B.yBackwards){B.yCount--;}
-            else{B.yCount++;}
+        // Draw Balls in play
+        drawBallsInPlay(g);
 
-            if(B.xBackwards){B.xCount--;}
-            else {B.xCount++;}
-
-            // xNum and yNum are the x and y locations based on the surface width and surface height
-            int xNum = (int) (B.xCount*B.xVelocity)%surfaceWidth;
-            int yNum = (int) (B.yCount*B.yVelocity)%surfaceHeight;
-
-            // Call method checkBallHitWall
-            checkIfWallHit(B, xNum, yNum);
-
-            // Call method checkIfPaddleHit
-            checkIfPaddleHit(B, xNum, yNum);
-
-            if(B == targetBall){
-                B.ballColor.setColor(Color.YELLOW);
-            }
-            else {
-                B.drawBall(g, xNum, yNum);
-            }
-        }
-
+        // Draw Bricks in play
         for(Brick Br : bricksInPlay){
             Br.drawBrick(g);
         }
@@ -118,6 +111,10 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
             bricksInPlay.remove(Br);
         }
 
+        // Set the target ball and change it's color
+        if(ballsInPlay.size() > 0){
+            targetBall = ballsInPlay.get(0);
+        }
         // Update the Display strings
         updateDisplayString();
     }
@@ -149,10 +146,9 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
     }
 
     /**
-     * Spawn new ball at random
-     * @param random
+     * Spawn new ball at random location
      */
-    public void addBall(Boolean random){
+    public void addBall(){
         Ball tempBall = new Ball();
         tempBall.spawnNewBallRandom(surfaceWidth, surfaceHeight);
         ballsInPlay.add(tempBall);
@@ -167,16 +163,54 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
         int xCord;
         int yCord;
         xCord = random.nextInt(surfaceWidth);
-        while (xCord <= 150 && xCord >= surfaceWidth - 150) {
+        while (xCord <= 200 && xCord >= surfaceWidth - 200) {
             xCord = random.nextInt() * surfaceWidth;
         }
         yCord = random.nextInt(surfaceHeight);
-        while (yCord <= 150 && yCord >= surfaceHeight - 150) {
+        while (yCord <= 200 && yCord >= surfaceHeight - 200) {
             yCord = random.nextInt() * surfaceHeight;
         }
 
         Brick addBrick =  new Brick(xCord, yCord);
         bricksInPlay.add(addBrick);
+    }
+
+    /**
+     * Method to draw the balls in play
+     * @param g
+     */
+    public void drawBallsInPlay(Canvas g){
+        for(Ball B : ballsInPlay){
+            // Updates counts of yCount and xCount
+            if(B.yBackwards){B.yCount--;}
+            else{B.yCount++;}
+
+            if(B.xBackwards){B.xCount--;}
+            else {B.xCount++;}
+
+            // xNum and yNum are the x and y locations based on the surface width and surface height
+            int xNum = (int) (B.xCount*B.xVelocity)%surfaceWidth;
+            int yNum = (int) (B.yCount*B.yVelocity)%surfaceHeight;
+
+            // Call method checkBallHitWall
+            checkIfWallHit(B, xNum, yNum);
+
+            // Call method checkIfPaddleHit
+            checkIfPaddleHit(B, xNum, yNum);
+
+            // If ball is not the target ball but has the Color of the target ball, Change it
+            if((B.ballColor.equals(defaultTargetBallColor) && (!(B.equals(targetBall))))){
+                B.setBallColor(defaultBallColor);
+            }
+
+            // If target B is target ball, change its color
+            if(B.equals(targetBall)){
+                B.ballColor = defaultTargetBallColor;
+            }
+            else {
+                B.drawBall(g, xNum, yNum);
+            }
+        }
     }
 
     /**
@@ -205,13 +239,26 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
         xPaddle = 100;
         Paint paddleColor = new Paint();
         paddleColor.setColor(Color.BLUE);
-        if((yPaddle + (paddleHeight/2) < surfaceHeight - wallWidth) &&
-                (yPaddle - (paddleHeight/2) > wallWidth)){
-            g.drawRect(xPaddle, yPaddle - (paddleHeight/2), xPaddle + paddleWidth,
-                    yPaddle + (paddleHeight/2), paddleColor);
+        if((yPaddle + (paddleHeight/2) > surfaceHeight - wallWidth)){
+            yPaddle = surfaceHeight - wallWidth - (paddleHeight/2);
         }
+        else if((yPaddle - (paddleHeight/2) < wallWidth)){
+            yPaddle = wallWidth + (paddleHeight/2);
+        }
+        g.drawRect(xPaddle, yPaddle - (paddleHeight/2), xPaddle + paddleWidth,
+                yPaddle + (paddleHeight/2), paddleColor);
+
+        //if((yPaddle + (paddleHeight/2) < surfaceHeight - wallWidth) &&
+        //        (yPaddle - (paddleHeight/2) > wallWidth)){
+        //    g.drawRect(xPaddle, yPaddle - (paddleHeight/2), xPaddle + paddleWidth,
+        //            yPaddle + (paddleHeight/2), paddleColor);
+        //}
     }
 
+    /**
+     * Method to draw Opponent Paddle
+     * @param g
+     */
     public void drawOpponentPaddle(Canvas g){
         Paint paddleColor = new Paint();
         paddleColor.setColor(Color.BLUE);
@@ -231,6 +278,11 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
         }
     }
 
+    /**
+     * Method for the opponent strategy, Updates opponent's y paddle location.
+     * Targets the yellow ball or the target ball.
+     * Has a set speed when moving up and down.
+     */
     public void opponentStrategy(){
         int yChange = 0;
         int ySpeed = 20;
@@ -270,7 +322,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
         // Checks if ball hits location of wall
         // Check if ball hit right wall
         if(xLocation + ball.ballRadius > surfaceWidth - wallWidth){
-            ball.xBackwards = true;
+            ballsToRemove.add(ball);
             scores[0]++;
         }
         // Check if ball hit left wall, reset ball
@@ -315,19 +367,17 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
     public void checkIfBrickHit(){
         for(Ball B : ballsInPlay){
             for (Brick Br : bricksInPlay){
-                // Change color of ball being checked for testing
-                // TODO delete
-                B.ballColor.setColor(Color.RED);
 
-                int rptBall = B.xCount + B.ballRadius;
-                int lptBall = B.xCount - B.ballRadius;
-                int tptBall = B.yCount - B.ballRadius;
-                int bptBall = B.yCount + B.ballRadius;
+                // Gets
+                int rptBall = B.xCount + B.ballRadius; // X location of right of ball
+                int lptBall = B.xCount - B.ballRadius; // X location of left of ball
+                int tptBall = B.yCount - B.ballRadius; // Y location of top of ball
+                int bptBall = B.yCount + B.ballRadius; // Y location of bottom of ball
 
-                int rptBrick = Br.xCenter + (Br.brickWidth/2);
-                int lptBrick = Br.xCenter - (Br.brickWidth/2);
-                int tptBrick = Br.yCenter - (Br.brickHeight/2);
-                int bptBrick = Br.yCenter + (Br.brickHeight/2);
+                int rptBrick = Br.xCenter + (Br.brickWidth/2); // X location of right of brick
+                int lptBrick = Br.xCenter - (Br.brickWidth/2); // X location of left of brick
+                int tptBrick = Br.yCenter - (Br.brickHeight/2); // Y location of top of brick
+                int bptBrick = Br.yCenter + (Br.brickHeight/2); // Y location of bottom of brick
 
                 // Check right of ball
                 if(rptBall <= rptBrick && rptBall >= lptBrick ){
@@ -352,7 +402,6 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
                     }
                 }
             }
-            B.ballColor.setColor(Color.WHITE);
         }
     }
 
@@ -380,7 +429,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
             String velocityString;
             if(ballsInPlay.size() > 0){
                 Ball ball = ballsInPlay.get(0);
-                coordinateString = ball.cordinatesTOString();
+                coordinateString = ball.coordinatesTOString();
                 velocityString = ball.velocitiesTOString();
             }
             else {

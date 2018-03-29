@@ -16,21 +16,22 @@ import java.util.Random;
 public class Ball {
 
     // Instance Variables
-    public Paint ballColor; // Set paint color for ball
+    public Paint ballColor = new Paint(); // Set paint color for ball
     public int ballRadius; // Radius of ball
     public int xCount; // counts the number of logical clock ticks in x direction
     public int yCount; // counts the number of logical clock ticks in y direction
     public double xVelocity; // Velocity of ball in x direction
     public double yVelocity; // Velocity of ball in y direction
-    public boolean xBackwards = false; // Whether the ball is moving backwards in x direction
-    public boolean yBackwards = false; // Whether the ball is moving backwards in y direction
+    public boolean xBackwards; // Whether the ball is moving backwards in x direction
+    public boolean yBackwards; // Whether the ball is moving backwards in y direction
 
     /**
      * Ball Constructor, Sets all instance variables to default values
      */
     public Ball(){
-        ballColor = new Paint();
-        ballColor.setColor(Color.WHITE);
+        Paint whitePaint = new Paint();
+        whitePaint.setColor(Color.WHITE);
+        setBallColor(whitePaint);
         ballRadius = 30;
         xCount = 100;
         yCount = 100;
@@ -89,7 +90,7 @@ public class Ball {
      * Converts this ball's x coordinates to a string.
      * @return
      */
-    public String cordinatesTOString(){
+    public String coordinatesTOString(){
         return "X : " + this.xCount + ", Y : " + this.yCount + ";";
     }
 
@@ -101,5 +102,7 @@ public class Ball {
         return "X Velocity : " + this.xVelocity + ", Y Velocity : " + this.yVelocity + ";";
     }
 
-
+    public void setBallColor(Paint paint){
+        ballColor.setColor(paint.getColor());
+    }
 }

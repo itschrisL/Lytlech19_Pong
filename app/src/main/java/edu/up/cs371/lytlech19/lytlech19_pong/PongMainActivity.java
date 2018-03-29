@@ -26,7 +26,7 @@ import junit.framework.Test;
 public class PongMainActivity extends AppCompatActivity {
 
 	/**
-	 * creates an AnimationSurface containing a TestAnimator.
+	 * creates an AnimationSurface containing a PongAnimator.
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,21 +35,21 @@ public class PongMainActivity extends AppCompatActivity {
 
 
 		// Connect the animation surface with the animator
-		edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface mySurface = (edu.up.cs371.lytlech19.
-				lytlech19_pong.AnimationSurface) this.findViewById(R.id.animationSurface);
+		edu.up.cs371.lytlech19.lytlech19_pong.AnimationSurface mySurface =
+				this.findViewById(R.id.animationSurface);
 		TextView textView1 = findViewById(R.id.TextView1);
-		TextView textView2 = findViewById(R.id.TextView2);
+
 
 		final PongAnimator pongAnimator = new PongAnimator();
-		TestAnimator testAnimator = new TestAnimator();
+
 		mySurface.setAnimator(pongAnimator);
-		mySurface.setTextViews(textView1, textView2);
+		mySurface.setTextViews(textView1);
 
 		Button addBallButton = findViewById(R.id.newBallButton);
 		addBallButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				pongAnimator.addBall(true);
+				pongAnimator.addBall();
 			}
 		});
 

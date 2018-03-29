@@ -5,8 +5,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
- * Created on 3/24/2018.
+ * Brick is a rectangle that are like the bricks from breakout.
  *
+ * Created on 3/24/2018.
  * @author Chris Lytle
  */
 
@@ -19,6 +20,7 @@ public class Brick {
     public int brickHeight;
     public Paint brickPaint;
 
+    // Brick constructor
     public Brick(int xCord, int yCord){
         // Setting up instance variables
         this.xCenter = xCord;
