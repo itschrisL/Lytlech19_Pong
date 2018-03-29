@@ -179,7 +179,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * Method to draw the balls in play
      * @param g
      */
-    public void drawBallsInPlay(Canvas g){
+    private void drawBallsInPlay(Canvas g){
         for(Ball B : ballsInPlay){
             // Updates counts of yCount and xCount
             if(B.yBackwards){B.yCount--;}
@@ -207,9 +207,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
             if(B.equals(targetBall)){
                 B.ballColor = defaultTargetBallColor;
             }
-            else {
-                B.drawBall(g, xNum, yNum);
-            }
+            B.drawBall(g, xNum, yNum);
         }
     }
 
@@ -217,7 +215,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * Draws a small boarder around the edge.
      * @param g
      */
-    public void drawWalls(Canvas g){
+    private void drawWalls(Canvas g){
         // Instance Variables
         Paint wallPaint = new Paint();
         Paint goalPaint = new Paint();
@@ -235,7 +233,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * Method to draw Paddle
      * @param g
      */
-    public void drawPaddle(Canvas g){
+    private void drawPaddle(Canvas g){
         xPaddle = 100;
         Paint paddleColor = new Paint();
         paddleColor.setColor(Color.BLUE);
@@ -259,7 +257,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * Method to draw Opponent Paddle
      * @param g
      */
-    public void drawOpponentPaddle(Canvas g){
+    private void drawOpponentPaddle(Canvas g){
         Paint paddleColor = new Paint();
         paddleColor.setColor(Color.BLUE);
 
@@ -283,7 +281,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * Targets the yellow ball or the target ball.
      * Has a set speed when moving up and down.
      */
-    public void opponentStrategy(){
+    private void opponentStrategy(){
         int yChange = 0;
         int ySpeed = 20;
         Ball targetBall = null;
@@ -318,7 +316,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * @param xLocation
      * @param yLocation
      */
-    public void checkIfWallHit(Ball ball, int xLocation, int yLocation){
+    private void checkIfWallHit(Ball ball, int xLocation, int yLocation){
         // Checks if ball hits location of wall
         // Check if ball hit right wall
         if(xLocation + ball.ballRadius > surfaceWidth - wallWidth){
@@ -346,7 +344,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
      * @param xLocation
      * @param yLocation
      */
-    public void checkIfPaddleHit(Ball ball, int xLocation, int yLocation){
+    private void checkIfPaddleHit(Ball ball, int xLocation, int yLocation){
         if((xLocation - ball.ballRadius < (xPaddle + paddleWidth))&&
                 (yLocation - ball.ballRadius > yPaddle - (paddleHeight/2))&&
                 (yLocation + ball.ballRadius < yPaddle + (paddleHeight/2)))
@@ -364,7 +362,7 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
     /**
      * Method to check if brick has been hit by any ball
      */
-    public void checkIfBrickHit(){
+    private void checkIfBrickHit(){
         for(Ball B : ballsInPlay){
             for (Brick Br : bricksInPlay){
 
@@ -408,11 +406,9 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
     /**
      * Set TestViews so that they can be updated by the animator
      * @param tv1
-     * @param tv2
      */
-    public void setTextViews(TextView tv1, TextView tv2){
+    public void setTextViews(TextView tv1){
         this.textView1 = tv1;
-        this.textView2 = tv2;
     }
 
     /**
@@ -461,10 +457,6 @@ public class PongAnimator implements edu.up.cs371.lytlech19.lytlech19_pong.Anima
 
     public String getDispString1() {
         return dispString1;
-    }
-
-    public String getDispString2() {
-        return dispString2;
     }
 }
 

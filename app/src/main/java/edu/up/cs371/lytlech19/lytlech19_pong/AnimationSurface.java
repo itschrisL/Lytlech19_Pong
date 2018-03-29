@@ -33,12 +33,9 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 	private Paint backgroundPaint = new Paint(); // painter for painting background
 	private int flashCount; // counts down ticks for background-flash
 	private Paint flashPaint; // has color for background flash
-    private TextView textView1; // Reference to the first text view
-    private TextView textView2; // Reference to the second text view
 
-	private float ballRadius;
-	private Paint ballColor = new Paint();
-	private Paint paddleColor = new Paint();
+    private TextView textView1; // Reference to the first text view
+
 	
 	/**
 	 * Constructor for the AnimationSurface class. In order to be useful, an
@@ -73,11 +70,6 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 	 * Helper-method for the constructors
 	 */
 	private void init() {
-
-		// Initialize variables
-		ballColor = new Paint(Color.BLUE);
-		ballRadius = (float) 10.0;
-		paddleColor = new Paint(Color.GREEN);
 
 		// Tell the OS that *yes* I will draw stuff
 		setWillNotDraw(false);
@@ -261,11 +253,10 @@ public class AnimationSurface extends SurfaceView implements OnTouchListener {
 						// tell the animator to draw the next frame
 						synchronized (surfaceHolder) {
                             animator.tick(canvas);
-                            String tempString1, tempString2;
+                            String tempString1;
                             if (animator instanceof PongAnimator){
-                                ((PongAnimator) animator).setTextViews(textView1, textView2);
+                                ((PongAnimator) animator).setTextViews(textView1);
                                 tempString1 = ((PongAnimator) animator).getDispString1();
-                                tempString2 = ((PongAnimator) animator).getDispString2();
                             }
 						}// synchronized
 					}
